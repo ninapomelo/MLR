@@ -1,0 +1,208 @@
+---
+title: "tutorial"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{tutorial}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+### Load the package
+```{r setup}
+library(MLR)
+```
+
+Using the R built-in dataset `mtcars` to illustrate how to use the package `MLR` to conduct multiple linear regression.
+
+## Fit the linear model
+### Load the dataset
+```{r}
+data = mtcars
+head(mtcars)
+```
+The main function in the package `MLR` is `mlr`. 
+
+The output is a list of analytical results, which containing the following seven objects:
+
+* `y.fitted:`: the fitted values of the model, as a vector
+* `y.res`: the residuals of the model, as a vector
+* `summary`: the estimated coefficients, as a table, which also contains the results of a two-sided t-test
+* `FP`: F statistic and p value
+* `vcov.matrix`: the variance-covariance matrix
+* `ANOVA.table`: the results of an ANOVA test, as a list
+* `R_Square`: the R-squared and adjusted R-square, as a vector of length 2
+
+
+```{r}
+model1 <- mlr("mpg", c("wt","hp","vs"), data=mtcars)
+ 
+```
+
+Get the fitted values and residuals of the model
+```{r}
+model1$y.fitted
+model1$y.res
+```
+
+Get the estimated coefficients and the F statistic and also R Squared
+```{r}
+model1$summary
+model1$FP
+model1$R_Square
+```
+
+Get the the variance-covariance matrix
+```{r}
+model1$vcov.matrix
+```
+
+Get the anova table
+```{r}
+model1$ANOVA.table
+```
+
+The second function in the package 'MLR' is 'Cov_selected'.
+
+Select covariates using the significance level(If not provided, 0.05 is used)
+
+```{r}
+Cov_selected(model1)
+```
+In this model, variable 'wt' and 'hp' are selected.
+
+## Compare results to base functions
+
+```{r}
+# test
+form2 <- mpg ~ wt + hp +vs
+model2 <- lm(formula = form2, data = mtcars)
+model2_sum <- summary(model2)
+model2_anova <- anova(model2)
+```
+
+
+```{r}
+# y fitted values
+fitted_values_m2 <- matrix(unlist(model2$fitted.values), nrow = 1, byrow = TRUE)
+all.equal(model1$y.fitted, fitted_values_m2, check.attributes = F)
+
+# Check residuals
+residuals_m2 <- matrix(unlist(model2$residuals), nrow = 1, byrow = TRUE)
+all.equal(model1$y.res,residuals_m2, check.attributes = F)
+
+#Check coefficents
+all.equal(model1$summary, model2_sum$coefficients, check.attributes = F)
+
+# Check F test
+all.equal(model1$FP[[1]], model2_sum$fstatistic["value"], check.attributes = F)
+
+# variance matrix
+all.equal(model1$vcov.matrix, vcov(model2), check.attributes = F)
+
+#Check anova(seperate by column)
+all.equal(model1$ANOVA.table[,"Df"],model2_anova$Df, check.attributes = F)
+all.equal(model1$ANOVA.table[,"Sum.Sq"],model2_anova$`Sum Sq`, check.attributes = F)
+all.equal(model1$ANOVA.table[,"Mean.Sq"],model2_anova$`Mean Sq`, check.attributes = F)
+all.equal(model1$ANOVA.table[,"F.value"],model2_anova$`F value`, check.attributes = F)
+all.equal(model1$ANOVA.table[,"p.value"],model2_anova$`Pr(>F)`, check.attributes = F)
+
+#Check R squared
+all.equal(model1$R_Square, c(model2_sum$r.squared,model2_sum$adj.r.squared), check.attributes = F)
+
+```
+All the results are true which shows that this is a correct function.
+
+One advantage of `mlr()`, is that we can access important model components without needing to use additional functions like `summary()` or `vcov()`, it is very convenient.
+
+
+## Compare speed to base functions
+When we compare the efficiency of `mlr()` to `lm()` using the **bench** package, the output tables below show that their speeds are similar, sometimes `mlr()` is even faster.
+
+compare the R squared value
+```{r ,message=FALSE}
+library(bench)
+bench::mark(
+  mlr("mpg", c("wt","hp","vs"), data=mtcars)$R_Square[[1]],
+  summary(lm(form2, mtcars))$r.squared
+)
+```
+
+compare one value in the variance and covariance matrix
+```{r}
+bench::mark(
+  mlr("mpg", c("wt","hp","vs"), data=mtcars)$vcov.matrix[2,1],
+  vcov(lm(form2, mtcars))[2,1]
+)
+```
+
+
+
+
+
+
+```{r}
+
+```
+
+```{r}
+
+```
+
+```{r}
+
+```
+
+```{r}
+
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

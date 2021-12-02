@@ -11,19 +11,18 @@
 #'@return If there exists collinearity between covariates, a warning message will be given instead of above results.
 #'
 #'@examples
-#'data=mtcars
-#'mlr("mpg", c("wt","hp","vs"), data=mtcars)
+#'data = mtcars
+#'mlr("mpg", c("wt","hp","vs"), data = mtcars)
 #'
 #'@export
 #'
 
 mlr <- function(outcome, covs, data) {
   #Regression Formula
-  #cat("The regression model is:\n")
-  print("The regression model is:\n")
+  cat("The regression model is:\n")
   F_outcome = paste(outcome,"~ intercept +")
   F_cov = paste(covs, collapse = " + ")
-  print(paste(F_outcome,F_cov))
+  cat(paste(F_outcome,F_cov))
   cat("\n")
 
   y = data[,outcome]
@@ -88,7 +87,7 @@ mlr <- function(outcome, covs, data) {
     rsq <- SSR / SSY
     rsq_adj <- 1 - (1 - rsq) * (n - 1) / (n - p)
     rsq_vec <- c(rsq,rsq_adj)
-    names(rsq_vec) <- c("Standard", "Adjusted")
+    names(rsq_vec) <- c("R_Standard", "R_Adjusted")
 
     # Compute variance and covariance
     vcov.mat = var.beta.mat
@@ -128,11 +127,11 @@ mlr <- function(outcome, covs, data) {
   }
 
   if(error == 1){
-    cat("ThereEexists Collinearity.")
+    cat("There Eexists Collinearity.")
     }
   else {
     return(list(y.fitted = t(y.fitted), y.res=t(y.res), summary = res.sum, FP = FP_statistic, vcov.matrix = vcov.mat,
-                ANOVA.table = anova,R_Square = rsq_vec))
+                ANOVA.table = anova, R_Square = rsq_vec))
   }
 }
 
