@@ -8,7 +8,6 @@
 #'
 #'@return A list containing model details, y.fitted values, y.res, summary(coefficients), FP(F statistic and P value),
 #'vcov.matrix(variance-covariance matrix), ANOVA.table, R_Square
-#'@return If there exists collinearity between covariates, a warning message will be given instead of above results.
 #'
 #'@examples
 #'data = mtcars
@@ -34,10 +33,7 @@ mlr <- function(outcome, covs, data) {
 
   # check colinearity
   check = t(X)%*%X
-  if(det(check) == 0){
-    error = 1
-  }
-  else{
+
     error = 0
     beta.est = solve(check)%*%t(X)%*%y
     SSE = t(y)%*%y - 2*t(beta.est)%*%t(X)%*%y + t(beta.est)%*%t(X)%*%X%*%beta.est
@@ -88,8 +84,6 @@ mlr <- function(outcome, covs, data) {
     F_statistic <- as.vector(f_value)
     names(F_statistic) <- "value"
 
-
-
     # Compute R-squared and adjusted R-squared
     rsq <- SSR / SSY
     rsq_adj <- 1 - (1 - rsq) * (n - 1) / (n - p)
@@ -131,15 +125,11 @@ mlr <- function(outcome, covs, data) {
     anova["Residuals",1] = nrow(X)-ncol(X)
     anova["Residuals",2] = SSE
     anova["Residuals",3] = sigma.sq.est
-  }
-  if(error == 1){
-    cat("There Eexists Collinearity.")
-    }
-  else {
+
     return(list(y.fitted = t(y.fitted), y.res=t(y.res), summary = res.sum, FP = F_statistic, vcov.matrix = vcov.mat,
                 ANOVA.table = anova, R_Square = rsq_vec))
   }
-}
+
 
 
 
