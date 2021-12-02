@@ -132,7 +132,6 @@ mlr <- function(outcome, covs, data) {
     anova["Residuals",2] = SSE
     anova["Residuals",3] = sigma.sq.est
   }
-
   if(error == 1){
     cat("There Eexists Collinearity.")
     }
