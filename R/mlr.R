@@ -67,8 +67,8 @@ mlr <- function(outcome, covs, data) {
 
     # conduct summary table
     res.sum = cbind(Estimate, Std.error, t.value, p.val)
-    rownames(res.sum) = c("Intercept",colnames(cov.info))
-    colnames(res.sum) = c("Estimate","Std.error","t.value", "p.value")
+    rownames(res.sum) = c("(Intercept)",colnames(cov.info))
+    colnames(res.sum) = c("Estimate","Std. Error","t value", "Pr(>|t|)")
 
     #SSE SSR SSY
     # F statistic and P value

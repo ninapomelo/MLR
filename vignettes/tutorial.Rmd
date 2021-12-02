@@ -73,7 +73,7 @@ The second function in the package 'MLR' is 'Cov_selected'.
 Select covariates using the significance level(If not provided, 0.05 is used)
 
 ```{r}
-Cov_selected(model1)
+# Cov_selected(model1)
 ```
 In this model, variable 'wt' and 'hp' are selected.
 
@@ -126,7 +126,7 @@ One advantage of `mlr()`, is that we can access important model components witho
 When we compare the efficiency of `mlr()` to `lm()` using the **bench** package, the output tables below show that their speeds are similar, sometimes `mlr()` is even faster.
 
 compare the R squared value
-```{r ,message=FALSE}
+#```{r ,message=FALSE}
 library(bench)
 bench::mark(
   mlr("mpg", c("wt","hp","vs"), data=mtcars)$R_Square[[1]],
@@ -135,7 +135,7 @@ bench::mark(
 ```
 
 compare one value in the variance and covariance matrix
-```{r}
+#```{r}
 bench::mark(
   mlr("mpg", c("wt","hp","vs"), data=mtcars)$vcov.matrix[2,1],
   vcov(lm(form2, mtcars))[2,1]

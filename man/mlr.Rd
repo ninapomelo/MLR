@@ -23,7 +23,7 @@ If there exists collinearity between covariates, a warning message will be given
 Conduct basic analyses with multiple linear regression
 }
 \examples{
-data=mtcars
-mlr("mpg", c("wt","hp","vs"), data=mtcars)
+data = mtcars
+mlr("mpg", c("wt","hp","vs"), data = mtcars)
 
 }
