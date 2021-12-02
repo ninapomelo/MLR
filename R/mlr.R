@@ -86,9 +86,8 @@ mlr <- function(outcome, covs, data) {
     #rownames(FP_statistic) <- c("F-statistic:", "P_value")
     #colnames(FP_statistic) <- ("value")
     F_statistic <- as.vector(f_value)
-    P_value <- as.vector(p_value)
     names(F_statistic) <- "value"
-    names(P_value) <- "value"
+
 
 
     # Compute R-squared and adjusted R-squared
@@ -138,7 +137,7 @@ mlr <- function(outcome, covs, data) {
     cat("There Eexists Collinearity.")
     }
   else {
-    return(list(y.fitted = t(y.fitted), y.res=t(y.res), summary = res.sum, FP = c(F_statistic,P_value), vcov.matrix = vcov.mat,
+    return(list(y.fitted = t(y.fitted), y.res=t(y.res), summary = res.sum, FP = F_statistic, vcov.matrix = vcov.mat,
                 ANOVA.table = anova, R_Square = rsq_vec))
   }
 }
