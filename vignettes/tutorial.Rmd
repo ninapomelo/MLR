@@ -17,6 +17,7 @@ knitr::opts_chunk$set(
 
 ### Load the package
 ```{r setup}
+devtools::check_rhub(env_vars=c(R_COMPILE_AND_INSTALL_PACKAGES = "always"))
 library(MLR)
 ```
 
