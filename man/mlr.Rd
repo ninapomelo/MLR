@@ -16,8 +16,6 @@ mlr(outcome, covs, data)
 \value{
 A list containing model details, y.fitted values, y.res, summary(coefficients), FP(F statistic and P value),
 vcov.matrix(variance-covariance matrix), ANOVA.table, R_Square
-
-If there exists collinearity between covariates, a warning message will be given instead of above results.
 }
 \description{
 Conduct basic analyses with multiple linear regression
