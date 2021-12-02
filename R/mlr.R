@@ -21,13 +21,12 @@
 #'@export
 #'
 
-mlr = function(outcome, covs, data) {
+mlr <- function(outcome, covs, data) {
   #Regression Formula
   #cat("The regression model is:\n")
   print("The regression model is:\n")
   F_outcome = paste(outcome,"~ intercept +")
   F_cov = paste(covs, collapse = " + ")
-  #cat(paste(F_outcome,F_cov))
   print(paste(F_outcome,F_cov))
   cat("\n")
 
@@ -95,12 +94,20 @@ mlr = function(outcome, covs, data) {
     rsq_vec <- c(rsq,rsq_adj)
     names(rsq_vec) <- c("Standard", "Adjusted")
 
-
     # Compute variance and covariance
     vcov.mat = var.beta.mat
     rownames(vcov.mat) = c("Intercept",colnames(cov.info))
     colnames(vcov.mat) = c("Intercept",colnames(cov.info))
 
+    # calculate the sequential SSR
+    # an internal function to calculate SSR
+    get.ssr = function(X,y) {
+      y.bar = mean(y)
+      beta.est = solve(t(X)%*%X)%*%t(X)%*%y
+      y.est = X%*%beta.est
+      ssr = sum((y.est-y.bar)^2)
+      return(ssr)
+    }
 
     # conduct ANOVA table
     SSR_list = c()
@@ -124,11 +131,14 @@ mlr = function(outcome, covs, data) {
     anova["Residuals",3] = sigma.sq.est
   }
 
-  if(error == 1) {cat("Collinearity existed!")} else {
-    #return(list(summary = res.sum, y.fitted = t(y.fitted), y.res=t(y.res), vcov.matrix = vcov.mat, ANOVA.table = anova))
+  if(error == 1){cat("ThereEexists Collinearity.")
+    }
+  else {
     return(list(y.fitted = t(y.fitted), y.res=t(y.res), summary = res.sum, FP = FP_statistic, vcov.matrix = vcov.mat, ANOVA.table = anova,
                 R_Square = rsq_vec))
   }
 }
+
+
 
 
