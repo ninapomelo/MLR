@@ -18,11 +18,12 @@
 
 mlr <- function(outcome, covs, data) {
   #Regression Formula
-  cat("The regression model is:\n")
+  #cat("The regression model is:\n")
   F_outcome = paste(outcome,"~ intercept +")
   F_cov = paste(covs, collapse = " + ")
-  cat(paste(F_outcome,F_cov))
-  cat("\n")
+  #cat(paste(F_outcome,F_cov))
+  #cat("\n")
+  #formula <- ("The regression model is:\n"+ paste(F_outcome,F_cov))
 
   y = data[,outcome]
   cov.info = as.matrix(data[,covs])
