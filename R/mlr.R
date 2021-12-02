@@ -6,17 +6,13 @@
 #'@param covs a vector of covariate name(s) you'd like to involve in the model
 #'@param data an object of class "data.frame" such as a dataset
 #'
-#'@return A list of analytical results
-#'@return summary: a table of estimated coefficients
-#'@return y.fitted: model-fitted response values
-#'@return y.res: residuals of response based on the model
-#'@return vcov.matrix: variance-covariance matrix
-#'@return ANOVA.table: ANOVA results
-#'@return A warning message will be given instead of the analytical results, if collinearity is found in the input dataset.
+#'@return A list containing model details, y.fitted values, y.res, summary(coefficients), FP(F statistic and P value),
+#'vcov.matrix(variance-covariance matrix), ANOVA.table, R_Square
+#'@return If there exists collinearity between covariates, a warning message will be given instead of above results.
 #'
 #'@examples
-#'data(longley)
-#'mlr("Employed", c("GNP.deflator","GNP","Unemployed","Armed.Forces","Population"), longley)
+#'data=mtcars
+#'mlr("mpg", c("wt","hp","vs"), data=mtcars)
 #'
 #'@export
 #'
@@ -131,14 +127,14 @@ mlr <- function(outcome, covs, data) {
     anova["Residuals",3] = sigma.sq.est
   }
 
-  if(error == 1){cat("ThereEexists Collinearity.")
+  if(error == 1){
+    cat("ThereEexists Collinearity.")
     }
   else {
-    return(list(y.fitted = t(y.fitted), y.res=t(y.res), summary = res.sum, FP = FP_statistic, vcov.matrix = vcov.mat, ANOVA.table = anova,
-                R_Square = rsq_vec))
+    return(list(y.fitted = t(y.fitted), y.res=t(y.res), summary = res.sum, FP = FP_statistic, vcov.matrix = vcov.mat,
+                ANOVA.table = anova,R_Square = rsq_vec))
   }
 }
-
 
 
 

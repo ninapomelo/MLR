@@ -16,7 +16,7 @@
 #'
 
 Cov_selected <- function(output, alpha=0.05) {
-  cov_selected = rownames(output$summary[output$summary[,"p.value"] <= alpha, ])
+  cov_selected = rownames(output$summary[output$summary[ ,"p.value"] <= alpha, ])
   return(cov_selected)
 }
 
