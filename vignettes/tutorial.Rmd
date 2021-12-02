@@ -90,11 +90,13 @@ model2_anova <- anova(model2)
 
 ```{r}
 # y fitted values
-fitted_values_m2 <- matrix(unlist(model2$fitted.values), nrow = 1, byrow = TRUE)
+#fitted_values_m2 <- matrix(unlist(model2$fitted.values), nrow = 1, byrow = TRUE)
+fitted_values_m2 <-as.matrix(model2$fitted.values)
 all.equal(model1$y.fitted, fitted_values_m2, check.attributes = F)
 
 # Check residuals
-residuals_m2 <- matrix(unlist(model2$residuals), nrow = 1, byrow = TRUE)
+#residuals_m2 <- matrix(unlist(model2$residuals), nrow = 1, byrow = TRUE)
+residuals_m2 <- as.matrix(model2$residuals)
 all.equal(model1$y.res,residuals_m2, check.attributes = F)
 
 #Check coefficents
@@ -107,11 +109,7 @@ all.equal(model1$FP[[1]], model2_sum$fstatistic["value"], check.attributes = F)
 all.equal(model1$vcov.matrix, vcov(model2), check.attributes = F)
 
 #Check anova(seperate by column)
-all.equal(model1$ANOVA.table[,"Df"],model2_anova$Df, check.attributes = F)
-all.equal(model1$ANOVA.table[,"Sum.Sq"],model2_anova$`Sum Sq`, check.attributes = F)
-all.equal(model1$ANOVA.table[,"Mean.Sq"],model2_anova$`Mean Sq`, check.attributes = F)
-all.equal(model1$ANOVA.table[,"F.value"],model2_anova$`F value`, check.attributes = F)
-all.equal(model1$ANOVA.table[,"p.value"],model2_anova$`Pr(>F)`, check.attributes = F)
+all.equal(model1$ANOVA.table,as.matrix(model2_anova), check.attributes = F)
 
 #Check R squared
 all.equal(model1$R_Square, c(model2_sum$r.squared,model2_sum$adj.r.squared), check.attributes = F)
@@ -126,19 +124,20 @@ One advantage of `mlr()`, is that we can access important model components witho
 When we compare the efficiency of `mlr()` to `lm()` using the **bench** package, the output tables below show that their speeds are similar, sometimes `mlr()` is even faster.
 
 compare the R squared value
-#```{r ,message=FALSE}
+```{r ,message=FALSE}
 library(bench)
 bench::mark(
   mlr("mpg", c("wt","hp","vs"), data=mtcars)$R_Square[[1]],
   summary(lm(form2, mtcars))$r.squared
 )
+
 ```
 
-compare one value in the variance and covariance matrix
-#```{r}
+compare variance and covariance matrix
+```{r compare,echo=FALSE, message=FALSE,results='hide'}
 bench::mark(
-  mlr("mpg", c("wt","hp","vs"), data=mtcars)$vcov.matrix[2,1],
-  vcov(lm(form2, mtcars))[2,1]
+  mlr("mpg", c("wt","hp","vs"), data=mtcars)$vcov.matrix,
+  vcov(lm(form2, mtcars))
 )
 ```
 

@@ -64,6 +64,7 @@ mlr <- function(outcome, covs, data) {
     # y = as.numeric(format(round(y, decimal), nsmall = decimal))
     y.res = y - y.fitted
     colnames(y.res) = "Residuals"
+    #y.res <- as.matrix(y.res)
 
     # conduct summary table
     res.sum = cbind(Estimate, Std.error, t.value, p.val)
@@ -80,8 +81,15 @@ mlr <- function(outcome, covs, data) {
     MSE <- SSE / (n - p)
     f_value <- MSR / MSE
     p_value <- 1 - pf(f_value, p - 1, n - p)
-    FP_statistic <- c(f_value, p_value)
-    names(FP_statistic) <- c("F_statistic", "P_value")
+    #FP_statistic <- c(f_value, p_value)
+    #FP_statistic <- as.matrix(FP_statistic,2)
+    #rownames(FP_statistic) <- c("F-statistic:", "P_value")
+    #colnames(FP_statistic) <- ("value")
+    F_statistic <- as.vector(f_value)
+    P_value <- as.vector(p_value)
+    names(F_statistic) <- "value"
+    names(P_value) <- "value"
+
 
     # Compute R-squared and adjusted R-squared
     rsq <- SSR / SSY
@@ -91,8 +99,8 @@ mlr <- function(outcome, covs, data) {
 
     # Compute variance and covariance
     vcov.mat = var.beta.mat
-    rownames(vcov.mat) = c("Intercept",colnames(cov.info))
-    colnames(vcov.mat) = c("Intercept",colnames(cov.info))
+    rownames(vcov.mat) = c("(Intercept)",colnames(cov.info))
+    colnames(vcov.mat) = c("(Intercept)",colnames(cov.info))
 
     # calculate the sequential SSR
     # an internal function to calculate SSR
@@ -118,7 +126,7 @@ mlr <- function(outcome, covs, data) {
     p.val2 = pf(F.val, 1, nrow(X)-ncol(X), lower.tail = FALSE)
     anova = cbind(1,SSR_list_1,SSR_list_1,F.val,p.val2)
     rownames(anova) = covs
-    colnames(anova) = c("Df", "Sum.Sq", "Mean.Sq", "F.value", "p.value")
+    colnames(anova) = c("Df", "Sum Sq", "Mean Sq", "F value", "Pr(>F)")
     Residuals = NA
     anova = rbind(anova, Residuals)
     anova["Residuals",1] = nrow(X)-ncol(X)
@@ -130,7 +138,7 @@ mlr <- function(outcome, covs, data) {
     cat("There Eexists Collinearity.")
     }
   else {
-    return(list(y.fitted = t(y.fitted), y.res=t(y.res), summary = res.sum, FP = FP_statistic, vcov.matrix = vcov.mat,
+    return(list(y.fitted = t(y.fitted), y.res=t(y.res), summary = res.sum, FP = c(F_statistic,P_value), vcov.matrix = vcov.mat,
                 ANOVA.table = anova, R_Square = rsq_vec))
   }
 }
