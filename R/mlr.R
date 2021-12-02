@@ -128,7 +128,8 @@ mlr <- function(outcome, covs, data) {
 
     return(list(y.fitted = t(y.fitted), y.res=t(y.res), summary = res.sum, FP = F_statistic, vcov.matrix = vcov.mat,
                 ANOVA.table = anova, R_Square = rsq_vec))
-  }
+}
+
 
 
 
