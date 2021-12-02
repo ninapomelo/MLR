@@ -125,6 +125,8 @@ When we compare the efficiency of `mlr()` to `lm()` using the **bench** package,
 
 compare the R squared value
 ```{r }
+install.packages("bench")
+library(bench)
 bench::mark(
   mlr("mpg", c("wt","hp","vs"), data=mtcars)$R_Square[[1]],
   summary(lm(form2, mtcars))$r.squared
