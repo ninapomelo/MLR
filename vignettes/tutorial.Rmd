@@ -29,12 +29,13 @@ head(mtcars)
 ```
 The main function in the package `MLR` is `mlr`. 
 
-The output is a list of analytical results, which containing the following seven objects:
+The output is a list of analytical results, which containing the following eight objects:
 
+* `formula`: The formula of the regression model
 * `y.fitted:`: the fitted values of the model, as a vector
 * `y.res`: the residuals of the model, as a vector
 * `summary`: the estimated coefficients, as a table, which also contains the results of a two-sided t-test
-* `FS`: F statistic 
+* `FS`: F statistic, as a vector
 * `vcov.matrix`: the variance-covariance matrix
 * `ANOVA.table`: the results of an ANOVA test, as a list
 * `R_Square`: the R-squared and adjusted R-square, as a vector of length 2
@@ -43,6 +44,11 @@ The output is a list of analytical results, which containing the following seven
 ```{r}
 model1 <- mlr("mpg", c("wt","hp","vs"), data=mtcars)
  
+```
+
+Get the regression model
+```{r}
+model1$formula
 ```
 
 Get the fitted values and residuals of the model
@@ -120,8 +126,9 @@ library(bench)
   summary(lm(form2, mtcars))$coefficients
   ))
 ```
-#total time
+
 ```{r}
+#total time
 Coeffi_E$total_time
 ```
 
@@ -132,8 +139,9 @@ Anova Efficient Test
   as.matrix(model2_anova)
   ))
 ```
-#total time
+
 ```{r}
+#total time
 anova_E$total_time
 ```
 
@@ -144,8 +152,9 @@ Cov.matrix_E <- bench::mark(
   vcov(lm(form2, mtcars)))
 ```
 
-#total time
+
 ```{r}
+#total time
 Cov.matrix_E$total_time
 ```
 

@@ -6,7 +6,7 @@
 #'@param covs a vector of covariate name(s) you'd like to involve in the model
 #'@param data an object of class "data.frame" such as a dataset
 #'
-#'@return A list containing model details, y.fitted values, y.res, summary(coefficients), FP(F statistic and P value),
+#'@return A list containing model details, y.fitted values, y.res, summary(coefficients), FS(F statistic),
 #'vcov.matrix(variance-covariance matrix), ANOVA.table, R_Square
 #'
 #'@examples
@@ -28,9 +28,6 @@ mlr <- function(outcome, covs, data) {
   rownames(X) <- NULL
   colnames(X) <- NULL
   X = cbind(1,X)
-
-
-  #check = t(X)%*%X
 
     error = 0
     beta.est = solve(t(X)%*%X)%*%t(X)%*%y
@@ -74,10 +71,6 @@ mlr <- function(outcome, covs, data) {
     MSE <- SSE / (n - p)
     f_value <- MSR / MSE
     p_value <- 1 - pf(f_value, p - 1, n - p)
-    #FP_statistic <- c(f_value, p_value)
-    #FP_statistic <- as.matrix(FP_statistic,2)
-    #rownames(FP_statistic) <- c("F-statistic:", "P_value")
-    #colnames(FP_statistic) <- ("value")
     F_statistic <- as.vector(f_value)
     names(F_statistic) <- "value"
 

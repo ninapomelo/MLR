@@ -20,12 +20,13 @@ library(MLR)
 ## Useage
 The main function in the package `MLR` is `mlr`.
 
-The output is a list of analytical results, which containing the following seven objects:
+The output is a list of analytical results, which containing the following eight objects:
 
+* `formula`: The formula of the regression model
 * `y.fitted:`: the fitted values of the model, as a vector
 * `y.res`: the residuals of the model, as a vector
 * `summary`: the estimated coefficients, as a table, which also contains the results of a two-sided t-test
-* `FS`: F statistic 
+* `FS`: F statistic, as a vector
 * `vcov.matrix`: the variance-covariance matrix
 * `ANOVA.table`: the results of an ANOVA test, as a list
 * `R_Square`: the R-squared and adjusted R-square, as a vector of length 2
