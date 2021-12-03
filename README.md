@@ -33,8 +33,14 @@ The output is a list of analytical results, which containing the following eight
 
 
 #### Quick Example
+To fit a multiple linear regression: mpg ~ wt + hp + vs, using the in-built dataset `mtcars`.
 ```{r}
 mlr("mpg", c("wt","hp","vs"), data=mtcars)
+```
+## Tutorial
+To view the tutorial(vignette) associated with this package, run the following code:
+```{r}
+browseVignettes(package = "MLR")
 ```
 
 ## Authorship
