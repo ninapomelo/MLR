@@ -14,7 +14,7 @@ mlr(outcome, covs, data)
 \item{data}{an object of class "data.frame" such as a dataset}
 }
 \value{
-A list containing model details, y.fitted values, y.res, summary(coefficients), FP(F statistic and P value),
+A list containing model details, y.fitted values, y.res, summary(coefficients), FS(F statistic),
 vcov.matrix(variance-covariance matrix), ANOVA.table, R_Square
 }
 \description{
