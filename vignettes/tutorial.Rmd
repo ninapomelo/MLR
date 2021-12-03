@@ -92,7 +92,7 @@ all.equal(model1$y.res,residuals_m2, check.attributes = F)
 all.equal(model1$summary, model2_sum$coefficients, check.attributes = F)
 
 # Check F test
-all.equal(model1$FP[[1]], model2_sum$fstatistic["value"], check.attributes = F)
+all.equal(model1$FS, model2_sum$fstatistic["value"], check.attributes = F)
 
 # variance matrix
 all.equal(model1$vcov.matrix, vcov(model2), check.attributes = F)

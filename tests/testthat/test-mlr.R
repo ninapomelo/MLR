@@ -9,7 +9,7 @@ test_that("mlr works", {
                 vcov(lm(formula = mpg ~ wt + hp +vs, data = mtcars)) )
 
   #check F statistic value
-  expect_equal( (mlr("mpg", c("wt","hp","vs"), data=mtcars))$FP[1],
+  expect_equal( (mlr("mpg", c("wt","hp","vs"), data=mtcars))$FS,
                 (summary(lm(formula = mpg ~ wt + hp +vs, data = mtcars))$fstatistic["value"]) )
 
   #check anova table
