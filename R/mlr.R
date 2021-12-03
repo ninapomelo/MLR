@@ -18,12 +18,9 @@
 
 mlr <- function(outcome, covs, data) {
   #Regression Formula
-  #cat("The regression model is:\n")
   F_outcome = paste(outcome,"~ intercept +")
   F_cov = paste(covs, collapse = " + ")
-  #cat(paste(F_outcome,F_cov))
-  #cat("\n")
-  #formula <- ("The regression model is:\n"+ paste(F_outcome,F_cov))
+  formula <- c("The regression model is:",F_outcome,F_cov)
 
   y = data[,outcome]
   cov.info = as.matrix(data[,covs])
@@ -32,11 +29,11 @@ mlr <- function(outcome, covs, data) {
   colnames(X) <- NULL
   X = cbind(1,X)
 
-  # check colinearity
-  check = t(X)%*%X
+
+  #check = t(X)%*%X
 
     error = 0
-    beta.est = solve(check)%*%t(X)%*%y
+    beta.est = solve(t(X)%*%X)%*%t(X)%*%y
     SSE = t(y)%*%y - 2*t(beta.est)%*%t(X)%*%y + t(beta.est)%*%t(X)%*%X%*%beta.est
     sigma.sq.est = SSE/(nrow(X)-ncol(X))
     var.beta.mat = as.numeric(sigma.sq.est) * solve(t(X)%*%X)
@@ -58,7 +55,6 @@ mlr <- function(outcome, covs, data) {
     colnames(y.fitted) = "Fitted.value"
 
     # generate residuals
-    # y = as.numeric(format(round(y, decimal), nsmall = decimal))
     y.res = y - y.fitted
     colnames(y.res) = "Residuals"
     #y.res <- as.matrix(y.res)
@@ -127,7 +123,8 @@ mlr <- function(outcome, covs, data) {
     anova["Residuals",2] = SSE
     anova["Residuals",3] = sigma.sq.est
 
-    return(list(y.fitted = t(y.fitted), y.res=t(y.res), summary = res.sum, FP = F_statistic, vcov.matrix = vcov.mat,
+    #return the list
+    return(list(formula=formula, y.fitted = t(y.fitted), y.res=t(y.res), summary = res.sum, FS = F_statistic, vcov.matrix = vcov.mat,
                 ANOVA.table = anova, R_Square = rsq_vec))
 }
 

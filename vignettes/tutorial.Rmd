@@ -34,7 +34,7 @@ The output is a list of analytical results, which containing the following seven
 * `y.fitted:`: the fitted values of the model, as a vector
 * `y.res`: the residuals of the model, as a vector
 * `summary`: the estimated coefficients, as a table, which also contains the results of a two-sided t-test
-* `FP`: F statistic and p value
+* `FS`: F statistic 
 * `vcov.matrix`: the variance-covariance matrix
 * `ANOVA.table`: the results of an ANOVA test, as a list
 * `R_Square`: the R-squared and adjusted R-square, as a vector of length 2
@@ -68,15 +68,6 @@ Get the anova table
 model1$ANOVA.table
 ```
 
-The second function in the package 'MLR' is 'Cov_selected'.
-
-Select covariates using the significance level(If not provided, 0.05 is used)
-
-```{r}
-# Cov_selected(model1)
-```
-In this model, variable 'wt' and 'hp' are selected.
-
 ## Compare results to base functions
 
 ```{r}
@@ -90,12 +81,10 @@ model2_anova <- anova(model2)
 
 ```{r}
 # y fitted values
-#fitted_values_m2 <- matrix(unlist(model2$fitted.values), nrow = 1, byrow = TRUE)
 fitted_values_m2 <-as.matrix(model2$fitted.values)
 all.equal(model1$y.fitted, fitted_values_m2, check.attributes = F)
 
 # Check residuals
-#residuals_m2 <- matrix(unlist(model2$residuals), nrow = 1, byrow = TRUE)
 residuals_m2 <- as.matrix(model2$residuals)
 all.equal(model1$y.res,residuals_m2, check.attributes = F)
 
@@ -121,23 +110,42 @@ One advantage of `mlr()`, is that we can access important model components witho
 
 
 ## Compare speed to base functions
-When we compare the efficiency of `mlr()` to `lm()` using the **bench** package, the output tables below show that their speeds are similar, sometimes `mlr()` is even faster.
+When we compare the efficiency of `mlr()` to `lm()` using the **bench** package, the output tables below show that their speeds are quite similar, `lm()` might be marginally faster.
 
-compare the R squared value
-```{r }
+Coefficient Efficient Test
+```{r}
 library(bench)
-bench::mark(
-  mlr("mpg", c("wt","hp","vs"), data=mtcars)$R_Square[[1]],
-  summary(lm(form2, mtcars))$r.squared
-)
-
+(Coeffi_E <- bench::mark(
+  mlr("mpg", c("wt","hp","vs"), data=mtcars)$summary,
+  summary(lm(form2, mtcars))$coefficients
+  ))
+```
+#total time
+```{r}
+Coeffi_E$total_time
 ```
 
-compare variance and covariance matrix
-```{r compare}
-bench::mark(
+Anova Efficient Test
+```{r}
+(anova_E <- bench::mark(
+  mlr("mpg", c("wt","hp","vs"), data=mtcars)$ANOVA.table,
+  as.matrix(model2_anova)
+  ))
+```
+#total time
+```{r}
+anova_E$total_time
+```
+
+Variance and covariance matrix Efficient Test
+```{r}
+Cov.matrix_E <- bench::mark(
   mlr("mpg", c("wt","hp","vs"), data=mtcars)$vcov.matrix,
-  vcov(lm(form2, mtcars))
-)
+  vcov(lm(form2, mtcars)))
+```
+
+#total time
+```{r}
+Cov.matrix_E$total_time
 ```
 
