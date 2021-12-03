@@ -35,8 +35,9 @@ The output is a list of analytical results, which containing the following seven
 ```{r}
 mlr("mpg", c("wt","hp","vs"), data=mtcars)
 ```
+
 ## Authorship
-This package was created in 2020 by Yue Pan.
+This package was created in 2021 by Yue Pan.
 
 <panyue@umich.edu>
 
