@@ -52,7 +52,6 @@ mlr <- function(outcome, covs, data) {
     # generate residuals
     y.res = y - y.fitted
     colnames(y.res) = "Residuals"
-    #y.res <- as.matrix(y.res)
 
     # conduct summary table
     res.sum = cbind(Estimate, Std.error, t.value, p.val)
