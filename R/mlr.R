@@ -45,7 +45,6 @@ mlr <- function(outcome, covs, data) {
 
     # generate fitted values
     y.fitted = X%*%beta.est
-
     y.fitted = as.matrix(y.fitted)
     rownames(y.fitted) = rownames(cov.info)
     colnames(y.fitted) = "Fitted.value"
