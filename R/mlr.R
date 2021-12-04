@@ -29,7 +29,6 @@ mlr <- function(outcome, covs, data) {
   colnames(X) <- NULL
   X = cbind(1,X)
 
-    error = 0
     beta.est = solve(t(X)%*%X)%*%t(X)%*%y
     SSE = t(y)%*%y - 2*t(beta.est)%*%t(X)%*%y + t(beta.est)%*%t(X)%*%X%*%beta.est
     sigma.sq.est = SSE/(nrow(X)-ncol(X))
